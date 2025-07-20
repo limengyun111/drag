@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>drag</title>
+    <link rel="stylesheet" href="./index.css" type="text/css">
+</head>
+
+<body>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const ele = document.getElementById('draggable-ele');
+
+            const getDragElePos = () => {
+                const eleRect = ele.getBoundingClientRect();
+                return {
+                    x: eleRect.width + eleRect.left,
+                    y: eleRect.height + eleRect.top,
+                    width: eleRect.width,
+                    height: eleRect.height
+                }
+            }
+
+
+            const isMouseInRange = (mousePos) => {
+                const elePos = getDragElePos();
+                return elePos.x - mousePos.x > 0 && elePos.x - mousePos.x < 10 || elePos.y - mousePos.y > 0 && elePos.y - mousePos.y < 10
+            }
+            const getMoveDirection = (mousePos) => {
+                const elePos = getDragElePos();
+                if (elePos.x - mousePos.x > 0 && elePos.x - mousePos.x < 10) {
+                    return 'horiz'
+                }
+                if (elePos.y - mousePos.y > 0 && elePos.y - mousePos.y < 10) {
+                    return 'verti'
+                }
+            }
+
+            let isBeginMove = false;
+            let mouseBeginPos;
+            let moveDirection;
+
+
+
+
+            const setMoveBeginVal = (posX, posY) => {
+                isBeginMove = true;
+                moveDirection = getMoveDirection({ x: posX, y: posY });
+                mouseBeginPos = {
+                    x: posX,
+                    y: posY,
+                }
+            }
+            ele.addEventListener('touchstart', (event) => {
+                const touch = event.touches[0];
+                if (isMouseInRange({ x: touch.clientX, y: touch.clientY })) {
+                    setMoveBeginVal(touch.clientX, touch.clientY);
+
+                }
+            });
+            ele.addEventListener('mousedown', (event) => {
+                if (isMouseInRange(event)) {
+                    setMoveBeginVal(event.x, event.y);
+                }
+            });
+
+            const setDragElePos = (curX, curY) => {
+                const elePos = getDragElePos();
+                if (moveDirection === 'horiz') {
+                    ele.style.width = elePos.width + curX - mouseBeginPos.x + 'px';
+                    mouseBeginPos.x = curX;
+                }
+                if (moveDirection === 'verti') {
+                    ele.style.height = elePos.height + curY - mouseBeginPos.y + 'px';
+                    mouseBeginPos.y = curY;
+                }
+            }
+
+            document.addEventListener('mousemove', (event) => {
+                if (isMouseInRange(event)) {
+                    ele.style.cursor = 'move';
+                } else {
+                    ele.style.cursor = 'pointer'
+                };
+
+                if (isBeginMove) {
+                    setDragElePos(event.x, event.y);
+                }
+
+            });
+
+            document.addEventListener('touchmove', (event) => {
+                // event.preventDefault();
+                const touch = event.touches[0];
+                if (isBeginMove) {
+                    setDragElePos(touch.clientX, touch.clientY);
+
+
+                }
+            });
+
+
+            document.addEventListener('mouseup', (event) => {
+                isBeginMove = false
+            });
+            document.addEventListener('touchend', (event) => {
+                isBeginMove = false
+            });
+
+        });
+
+    </script>
+
+    <div class="drag-wrap" id="draggable-ele">
+    </div>
+
+
+</body>
+
+</html>
