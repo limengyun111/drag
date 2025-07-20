@@ -1,9 +1,14 @@
 .drag-wrap {
-  width: 120px;
-  height: 120px;
-  border: 10px solid red;
-  background-color: rgb(1, 1, 33);
-  cursor: pointer;
-  box-sizing: border-box;
-  transition: width 0 ease,height 0 ease;
+    width: 120px;
+    height: 120px;
+    position: relative;
+    top: 0;
+    left: 0;
+    cursor: pointer;
+    border: 1px solid;
+    box-sizing: border-box;
+    background-color: rgb(1, 1, 33);
+
+
+
 }
