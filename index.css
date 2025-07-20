@@ -1,14 +1,18 @@
 .drag-wrap {
     width: 120px;
     height: 120px;
-    position: relative;
+    position: fixed;
     top: 0;
     left: 0;
     cursor: pointer;
     border: 1px solid;
+		margin: 10px;
     box-sizing: border-box;
     background-color: rgb(1, 1, 33);
 
-
-
+}
+#draggable-ele-2 {
+  background-color: rgb(96, 96, 201);
+	top: 160px;
+  left: 0;
 }

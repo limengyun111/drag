@@ -7,12 +7,17 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>drag</title>
 	<link rel="stylesheet" href="./index.css" type="text/css">
+	<script src="./index.js"></script>
 </head>
 
 <body>
 	<script>
 		document.addEventListener('DOMContentLoaded', function () {
-			const ele = document.getElementById('draggable-ele');
+			const ele = document.getElementById('draggable-ele-1');
+			const eleDraggable = new DraggableEle('draggable-ele-2');
+			eleDraggable.draggable();
+
+
 
 			const getDragElePos = () => {
 				const eleRect = ele.getBoundingClientRect();
@@ -61,7 +66,6 @@
 			});
 
 			const setDragElePos = (curX, curY) => {
-				const elePos = getDragElePos();
 				ele.style.left = dragEleBeginPos.x + curX - mouseBeginPos.x + 'px';
 				ele.style.top = dragEleBeginPos.y + curY - mouseBeginPos.y + 'px';
 			}
@@ -80,7 +84,6 @@
 			});
 
 			document.addEventListener('touchmove', (event) => {
-				// event.preventDefault();
 				const touch = event.touches[0];
 				if (isBeginMove) {
 					setDragElePos(touch.clientX, touch.clientY);
@@ -99,8 +102,10 @@
 
 	</script>
 
-	<div class="drag-wrap" id="draggable-ele">
+	<div class="drag-wrap" id="draggable-ele-1">
 	</div>
+	<div class="drag-wrap" id="draggable-ele-2"></div>
+
 
 
 </body>
