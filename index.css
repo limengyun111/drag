@@ -1,18 +1,18 @@
 .drag-wrap {
-    width: 120px;
-    height: 120px;
-    position: fixed;
-    top: 0;
-    left: 0;
-    cursor: pointer;
-    border: 1px solid;
-		margin: 10px;
-    box-sizing: border-box;
-    background-color: rgb(1, 1, 33);
-
-}
-#draggable-ele-2 {
-  background-color: rgb(96, 96, 201);
-	top: 160px;
+  width: 120px;
+  height: 120px;
+  position: absolute;
+  top: 0;
   left: 0;
+  transform: translate(200px, 200px);
+  cursor: pointer;
+  border: 1px solid;
+  box-sizing: border-box;
+  background-color: rgb(1, 1, 33);
+  color: red
+}
+
+#draggable-ele-2 {
+  transform: translate(220px, 200px);
+
 }
