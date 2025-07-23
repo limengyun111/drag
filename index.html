@@ -7,23 +7,42 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>drag</title>
   <link rel="stylesheet" href="./index.css" type="text/css">
-  <script src="./index1.js"></script>
+  <script src="./index2.js"></script>
 </head>
 
 <body>
 
 
+
   <div class="rect-wrap">
     <div class="rect-ele" id="scalable-ele-1">rect</div>
   </div>
-  <div class="drag-wrap" id="draggable-ele-1">eleone</div>
+  <div class="drag-wrap" id="draggable-ele-1">drag-ele</div>
+
 
   <script>
     const dragEle = document.getElementById('draggable-ele-1');
-    const fixedEle = document.getElementById('scalable-ele-1');
-    const dragEleInstance = new DragScaleCombin(dragEle, fixedEle);
+    const scaleEle = document.getElementById('scalable-ele-1');
+    const dragEleInstance = new DragElement(dragEle);
 
-  
+    const getScaleElePos = () => {
+      const eleRect = scaleEle.getBoundingClientRect();
+      return {
+        height: eleRect.height,
+        width: eleRect.width,
+
+      }
+    };
+
+    dragEleInstance.onMove = (offsetX, offsetY) => {
+      const curScalePos = getScaleElePos();
+      const nextScalePosWidth = curScalePos.width + offsetX;
+      const nextScalePosHeight = curScalePos.height + offsetY;
+      scaleEle.style.width = nextScalePosWidth + 'px';
+      scaleEle.style.height = nextScalePosHeight + 'px';
+    }
+
+
   </script>
 
 
