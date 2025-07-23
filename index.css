@@ -1,12 +1,16 @@
+.wrap {
+  display: flex;
+  height: 200px;
+  width: 260px;
+  position: relative;
+  justify-content: space-between;
+  border: 5px solid red;
+  /* overflow: hidden; */
+
+}
 .drag-wrap {
-  width: 80px;
-  height: 80px;
- 
-  /* margin-top: 10px; */
-  /* transform: translate(200px, 200px); */
-  /* position: absolute;
-  top: 200px;
-  left: 200px; */
+  width: 40px;
+  margin: 0 5px;
   cursor: pointer;
   border: 1px solid;
   box-sizing: border-box;
@@ -17,7 +21,6 @@
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
-  margin: 40px 0 0 140px;
   
   /* 移动端优化 */
   -webkit-touch-callout: none;
@@ -33,4 +36,10 @@
   height: 200px;
   color: red;
   background-color: black;
+}
+#scalable-ele-2 {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+
 }

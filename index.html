@@ -12,21 +12,30 @@
 
 <body>
 
-
-
-  <div class="rect-wrap">
+<div class="wrap">
+   <div class="rect-wrap">
     <div class="rect-ele" id="scalable-ele-1">rect</div>
   </div>
   <div class="drag-wrap" id="draggable-ele-1">drag-ele</div>
+  <div class="rect-wrap">
+    <div class="rect-ele" id="scalable-ele-2">rect</div>
+  </div>
+
+</div>
+
+ 
 
 
   <script>
+
     const dragEle = document.getElementById('draggable-ele-1');
-    const scaleEle = document.getElementById('scalable-ele-1');
+    const leftScaleEle = document.getElementById('scalable-ele-1');
+    const rightScaleEle = document.getElementById('scalable-ele-2');
+
     const dragEleInstance = new DragElement(dragEle);
 
-    const getScaleElePos = () => {
-      const eleRect = scaleEle.getBoundingClientRect();
+    const getScaleElePos = (ele) => {
+      const eleRect = ele.getBoundingClientRect();
       return {
         height: eleRect.height,
         width: eleRect.width,
@@ -35,11 +44,11 @@
     };
 
     dragEleInstance.onMove = (offsetX, offsetY) => {
-      const curScalePos = getScaleElePos();
-      const nextScalePosWidth = curScalePos.width + offsetX;
-      const nextScalePosHeight = curScalePos.height + offsetY;
-      scaleEle.style.width = nextScalePosWidth + 'px';
-      scaleEle.style.height = nextScalePosHeight + 'px';
+      const curLeftScalePos = getScaleElePos(leftScaleEle);
+      const curRightScalePos = getScaleElePos(rightScaleEle);
+     
+      leftScaleEle.style.width = curLeftScalePos.width + offsetX + 'px';
+      rightScaleEle.style.width = curRightScalePos.width - offsetX + 'px';
     }
 
 

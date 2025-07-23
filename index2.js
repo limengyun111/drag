@@ -82,12 +82,11 @@ class DragElement {
     this.mouseBeginPos.y = mouseCurY;
 
     if(eleCurX >= this.dragRange.left && eleCurX <= this.dragRange.right && eleCurY >= this.dragRange.top && eleCurY <= this.dragRange.bottom) {
-      this.dragEle.style.transform = `translate(${eleCurX}px, ${eleCurY}px)`;
-      this.onMove(offSetX, offSetY);
+      this.dragEle.style.transform = `translate(${eleCurX}px, ${0}px)`;
+      this.onMove(offSetX, 0);
     }
 
   }
-
 
   draggable = () => {
     this.dragEle.addEventListener('touchstart', (event) => {
@@ -97,7 +96,6 @@ class DragElement {
       }
     });
     this.dragEle.addEventListener('mousedown', (event) => {
-
       if (this.isMouseInRange(event)) {
         this.#setMoveBeginVal(event.x, event.y);
       }
