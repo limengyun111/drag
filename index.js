@@ -11,24 +11,37 @@ class DraggableEle {
     this.isBeginMove = false;
     this.mouseBeginPos = undefined;
     this.dragEleBeginPos = undefined;
-    this.moveRange = {
-      top: 100,
-      left: 100,
-      right: 700,
-      bottom: 600,
-    };
+    this.canMove = true;
     this.draggable();
 
+  }
+  getTranslatePos() {
+    const style = window.getComputedStyle(this.ele);
+    const transform = style.transform;
+
+    if (!transform || transform === 'none') {
+      return { x: 0, y: 0, z: 0 };
+    }
+
+    const matrix = new DOMMatrix(transform);
+    return {
+      x: matrix.m41,
+      y: matrix.m42,
+      z: matrix.m43
+    };
+  }
+
+  cancelMove() {
+    this.canMove = false;
+  }
+  restoreMove() {
+    this.canMove = true;
   }
 
 
   getDragElePos = () => {
     const eleRect = this.ele.getBoundingClientRect();
     return {
-      // x: eleRect.width + eleRect.left,
-      // y: eleRect.height + eleRect.top,
-      // width: eleRect.width,
-      // height: eleRect.height,
       left: eleRect.left,
       top: eleRect.top,
       right: eleRect.right,
@@ -50,8 +63,7 @@ class DraggableEle {
         y: posY,
       },
       this.dragEleBeginPos = {
-        // x: elePos.x,
-        // y: elePos.y,
+
         left: elePos.left,
         right: elePos.right,
         top: elePos.top,
@@ -59,22 +71,22 @@ class DraggableEle {
       }
   }
   #setDragElePos = (mouseCurX, mouseCurY) => {
-    const eleCurX = this.dragEleBeginPos.left + mouseCurX - this.mouseBeginPos.x;
-    const eleCurY = this.dragEleBeginPos.top + mouseCurY - this.mouseBeginPos.y;
+    const { x, y } = this.getTranslatePos();
+    const eleCurX = x + mouseCurX - this.mouseBeginPos.x;
+    const eleCurY = y + mouseCurY - this.mouseBeginPos.y;
+    this.mouseBeginPos.x = mouseCurX;
+    this.mouseBeginPos.y = mouseCurY;
+     const elePos = this.getDragElePos();
+    console.log('this.dragEleBeginPos.top',this.dragEleBeginPos.top);
+  
+    if(this.canMove) {
+      console.log('eleCurY', eleCurY);
+      this.ele.style.transform = `translate(${eleCurX}px, ${eleCurY}px)`;
 
-    const getTranslateX = () => {
-      if (eleCurX <= this.moveRange.left) return this.moveRange.left;
-      if (eleCurX >= this.moveRange.right) return this.moveRange.right;
-      return eleCurX;
+            this.ele.style.transform = `translate(${0}px, ${0}px)`;
+
     }
-    const getTranslateY = () => {
-      if (eleCurY <= this.moveRange.top) return this.moveRange.top;
-      if (eleCurY >= this.moveRange.bottom) return this.moveRange.bottom;
-      return eleCurY
-    }
 
-
-    this.ele.style.transform = `translate(${getTranslateX()}px, ${getTranslateY()}px)`;
   }
 
 
@@ -92,6 +104,8 @@ class DraggableEle {
     });
 
     document.addEventListener('mousemove', (event) => {
+      event.preventDefault();
+    
       if (this.isMouseInRange(event)) {
         this.ele.style.cursor = 'move';
         if (this.isBeginMove) {
