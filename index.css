@@ -1,50 +1,58 @@
 .wrap {
   display: flex;
-  height: 200px;
-  position: relative;
-  justify-content: space-between;
-  border: 5px solid red;
   min-width: 300px;
-  /* overflow: hidden; */
+  height: 200px;
+  padding: 10px;
+  justify-content: space-between;
+  background-color: rgb(1, 1, 44);
+  position: relative;
 
 }
+
 .drag-wrap {
   width: 10px;
   cursor: pointer;
   border: 1px solid;
   box-sizing: border-box;
-  background-color: gray;
-  color: red;
+  background-color: rgb(1, 1, 44);
+  position: relative;
+
+  
   /* 禁用选中 */
   user-select: none;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
-  
+
   /* 移动端优化 */
   -webkit-touch-callout: none;
   -webkit-tap-highlight-color: transparent;
 }
-
-.rect-wrap {
-  width: calc(50% - 5px);
-  height: 200px;
-  z-index: -1;
-  position: relative;
+.drag-wrap::after {
+  content: '••';
+  font-size: 6px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  color: rgb(183, 181, 181);
 }
+
 #scalable-ele-1 {
-  height: 200px;
-  color: red;
-  background-color: black;
+  flex: 1;
+  border-radius: 8px;
+  padding: 10px;
+  color: white;
+  background-color: rgb(98, 97, 97, 0.5);
+  overflow: scroll;
+
 }
 
 #scalable-ele-2 {
- 
-  height: 100%;
-  position: absolute;
-  right: 0;
-  width: 100%;
-  margin-left: auto;
-  background-color: blue;
-
+  flex: 1;
+  padding: 10px;
+   color: white;
+  background-color: rgb(98, 97, 97, 0.5);
+  border-radius: 8px;
+  overflow: scroll;
 }

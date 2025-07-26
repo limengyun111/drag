@@ -82,13 +82,8 @@ class DragElement {
     this.mouseBeginPos.x = mouseCurX;
     this.mouseBeginPos.y = mouseCurY;
 
-    // if(eleCurX >= this.dragRange.left && eleCurX <= this.dragRange.right && eleCurY >= this.dragRange.top && eleCurY <= this.dragRange.bottom) {
-
-    // }
     if (this.fn(offSetX)) {
-      this.dragEle.style.transform = `translate(${eleCurX}px, ${0}px)`;
       this.onMove(offSetX, 0, eleCurX);
-
     }
 
   }

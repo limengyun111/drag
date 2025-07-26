@@ -13,13 +13,11 @@
 <body>
 
   <div class="wrap" id="wrapper">
-    <div class="rect-wrap">
-      <div class="rect-ele" id="scalable-ele-1">rect</div>
+    <div class="rect-ele" id="scalable-ele-1">This is the drag box on the left.You can drag this element. The minimum width of the element is 100px.You can also customize the minimum width.This is the drag box on the left.You can drag this element. The minimum width of the element is 100px.You can also customize the minimum width.This is the drag box on the left.You can drag this element. The minimum width of the element is 100px.You can also customize the minimum width.</div>
+    <div class="drag-wrap" id="draggable-ele-1">
+
     </div>
-    <div class="drag-wrap" id="draggable-ele-1">drag-ele</div>
-    <div class="rect-wrap">
-      <div class="rect-ele" id="scalable-ele-2">rect</div>
-    </div>
+    <div class="rect-ele" id="scalable-ele-2">This is the drag box on the right.You can drag this element. The minimum width of the element is 100px.You can also customize the minimum width. </div>
 
   </div>
 
@@ -32,73 +30,42 @@
     const leftScaleEle = document.getElementById('scalable-ele-1');
     const rightScaleEle = document.getElementById('scalable-ele-2');
 
+    const leftComputedStyle = window.getComputedStyle(leftScaleEle);
+    const rightComputedStyle = window.getComputedStyle(rightScaleEle);
+
     let minLeftWidth = 100;
     let minRightWidth = 100;
 
-    const onMoveCallback = (offsetX) => {
+    const rangeDiff = (offsetX) => {
       const curLeftScalePos = getScaleElePos(leftScaleEle);
       const curRightScalePos = getScaleElePos(rightScaleEle);
-
-      if(curLeftScalePos.width <= 100 && offsetX < 0 || curRightScalePos.width <= 100 && offsetX > 0) {
+      if (curLeftScalePos.width <= minLeftWidth && offsetX < 0 || curRightScalePos.width <= minRightWidth && offsetX > 0) {
         return false
       }
-      // if (curLeftScalePos.width + offsetX > minLeftWidth && curRightScalePos.width - offsetX > minRightWidth) {
-      //   return true;
-      // }
       return true;
     }
 
-    const dragEleInstance = new DragElement(dragEle, onMoveCallback);
-
-
-    let translateRation;
-    let childRatios = [];
-    const dragWidth = 10;
+    const dragEleInstance = new DragElement(dragEle, rangeDiff);
 
     const getScaleElePos = (ele) => {
       const eleRect = ele.getBoundingClientRect();
       return {
         height: eleRect.height,
         width: eleRect.width,
-
       }
     };
 
     dragEleInstance.onMove = ((offsetX, offsetY, translateX) => {
       const curLeftScalePos = getScaleElePos(leftScaleEle);
       const curRightScalePos = getScaleElePos(rightScaleEle);
-      const parentWidth = wrapper.clientWidth;
 
-      leftScaleEle.style.width = curLeftScalePos.width + offsetX + 'px';
-      rightScaleEle.style.width = curRightScalePos.width - offsetX + 'px';
+      const leftGrow = leftComputedStyle.flexGrow / curLeftScalePos.width * (curLeftScalePos.width + offsetX);
+      const rightGrow = rightComputedStyle.flexGrow / curRightScalePos.width * (curRightScalePos.width - offsetX);
 
+      leftScaleEle.style.flexGrow = leftGrow;
+      rightScaleEle.style.flexGrow = rightGrow;
 
-      childRatios = updateRatios([leftScaleEle, rightScaleEle]);
-      translateRation = translateX / parentWidth;
     });
-
-
-    function updateRatios(children) {
-      const parentWidth = wrapper.clientWidth;
-      return Array.from(children).map(child => {
-        return getScaleElePos(child).width / (parentWidth - dragWidth);
-      });
-    }
-
-
-    const resizeObserver = new ResizeObserver((entries) => {
-
-      const newParentWidth = entries[0].target.clientWidth;
-      console.log('newParentWidth----', newParentWidth);
-      const lastParentWidth = newParentWidth - dragWidth;
-      [leftScaleEle, rightScaleEle].forEach((child, index) => {
-        const newWidth = lastParentWidth * childRatios[index];
-        child.style.width = `${newWidth}px`;
-      });
-
-      dragEle.style.transform = `translate(${newParentWidth * translateRation}px, ${0}px)`;
-    });
-    resizeObserver.observe(wrapper)
 
 
   </script>
