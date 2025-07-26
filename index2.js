@@ -1,8 +1,9 @@
 class DragElement {
   static paramEleHistory = new Set();
 
-  constructor(dragEle) {
+  constructor(dragEle, fn) {
     this.dragEle = dragEle;
+    this.fn = fn;
     if (DragElement.paramEleHistory.has(this.dragEle)) {
       return [...DragDropCombin.paramEleHistory].find(item => item === this.dragEle);
     }
@@ -12,17 +13,17 @@ class DragElement {
     this.mouseBeginPos = undefined;
     this.dragEleBeginPos = undefined;
 
-    this.dragRange = {
-      left: -60,
-      right: 60,
-      top: -100,
-      bottom: 50
-    }
+    // this.dragRange = {
+    //   left: -60,
+    //   right: 60,
+    //   top: -100,
+    //   bottom: 50
+    // }
     this.draggable();
 
   }
-  onMove(x, y) {
-  
+  onMove(x, y, z) {
+
   }
   getTranslatePos() {
     const style = window.getComputedStyle(this.dragEle);
@@ -81,9 +82,13 @@ class DragElement {
     this.mouseBeginPos.x = mouseCurX;
     this.mouseBeginPos.y = mouseCurY;
 
-    if(eleCurX >= this.dragRange.left && eleCurX <= this.dragRange.right && eleCurY >= this.dragRange.top && eleCurY <= this.dragRange.bottom) {
+    // if(eleCurX >= this.dragRange.left && eleCurX <= this.dragRange.right && eleCurY >= this.dragRange.top && eleCurY <= this.dragRange.bottom) {
+
+    // }
+    if (this.fn(offSetX)) {
       this.dragEle.style.transform = `translate(${eleCurX}px, ${0}px)`;
-      this.onMove(offSetX, 0);
+      this.onMove(offSetX, 0, eleCurX);
+
     }
 
   }

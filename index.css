@@ -1,20 +1,19 @@
 .wrap {
   display: flex;
   height: 200px;
-  width: 260px;
   position: relative;
   justify-content: space-between;
   border: 5px solid red;
+  min-width: 300px;
   /* overflow: hidden; */
 
 }
 .drag-wrap {
-  width: 40px;
-  margin: 0 5px;
+  width: 10px;
   cursor: pointer;
   border: 1px solid;
   box-sizing: border-box;
-  background-color: rgb(1, 1, 33);
+  background-color: gray;
   color: red;
   /* 禁用选中 */
   user-select: none;
@@ -28,18 +27,24 @@
 }
 
 .rect-wrap {
-  width: 100px;
+  width: calc(50% - 5px);
   height: 200px;
+  z-index: -1;
+  position: relative;
 }
-.rect-ele {
-  width: 100px;
+#scalable-ele-1 {
   height: 200px;
   color: red;
   background-color: black;
 }
+
 #scalable-ele-2 {
+ 
+  height: 100%;
   position: absolute;
   right: 0;
-  bottom: 0;
+  width: 100%;
+  margin-left: auto;
+  background-color: blue;
 
 }
