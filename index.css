@@ -1,3 +1,24 @@
+.wrap1 {
+  margin-bottom: 10px;
+  height: 240px;
+}
+
+#single-ele {
+  width: 100px;
+  height: 200px;
+  background-color: rgb(31, 6, 89);
+  color: white;
+  /* padding: 8px; */
+  border-radius: 8px;
+}
+
+#drag2 {
+  width: 50px;
+  height: 25px;
+  color: white;
+  cursor: pointer;
+  background-color: rgb(15, 7, 7);
+}
 .wrap {
   display: flex;
   min-width: 300px;
@@ -39,7 +60,7 @@
 }
 
 #scalable-ele-1 {
-  flex: 1;
+  flex: 500 500 ;
   border-radius: 8px;
   padding: 10px;
   color: white;
@@ -49,10 +70,89 @@
 }
 
 #scalable-ele-2 {
-  flex: 1;
+  flex: 500 500;
   padding: 10px;
    color: white;
   background-color: rgb(98, 97, 97, 0.5);
   border-radius: 8px;
   overflow: scroll;
 }
+
+.wrap3 {
+  margin-top: 20px;
+  display: flex;
+  /* justify-content: space-between; */
+  height: 200px;
+  background-color: rgb(1, 1, 44);
+  padding: 10px;
+  min-width: 320px;
+
+}
+#wrap3-left {
+   flex: 500 500;
+   border-radius: 8px;
+  background-color: rgb(98, 97, 97, 0.5);
+  padding: 4px;
+  color:white;
+
+}
+#wrap3-drag1 {
+  width: 10px;
+  cursor: pointer;
+  border: 1px solid;
+  box-sizing: border-box;
+  background-color: rgb(1, 1, 44);
+  position: relative;
+  /* cursor: url('./mouse-blue.svg'), auto;; */
+
+  
+  /* 禁用选中 */
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+
+  /* 移动端优化 */
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+
+}
+#wrap3-middle {
+   /* width: 100px; */
+  flex: 500 500;
+ background-color: rgb(98, 97, 97, 0.5);
+  border-radius: 8px;
+  padding: 4px;
+  color:white;
+
+}
+#wrap3-drag2 {
+  width: 10px;
+  cursor: pointer;
+  border: 1px solid;
+  box-sizing: border-box;
+  background-color: rgb(1, 1, 44);
+  position: relative;
+
+  
+  /* 禁用选中 */
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+
+  /* 移动端优化 */
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+
+}
+#wrap3-right {
+  flex: 500 500;
+  background-color: rgb(98, 97, 97, 0.5);
+  padding: 4px;
+  color:white;
+  border-radius: 8px;
+
+}
+
+

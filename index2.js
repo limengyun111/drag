@@ -1,11 +1,12 @@
 class DragElement {
   static paramEleHistory = new Set();
 
-  constructor(dragEle, fn) {
+  constructor(dragEle,compare, customDragMove) {
     this.dragEle = dragEle;
-    this.fn = fn;
+    this.compare = compare;
+    this.customDragMove = customDragMove;
     if (DragElement.paramEleHistory.has(this.dragEle)) {
-      return [...DragDropCombin.paramEleHistory].find(item => item === this.dragEle);
+      return [...DragElement.paramEleHistory].find(item => item === this.dragEle);
     }
     DragElement.paramEleHistory.add(this.dragEle);
 
@@ -22,7 +23,7 @@ class DragElement {
     this.draggable();
 
   }
-  onMove(x, y, z) {
+  onMove(x, y) {
 
   }
   getTranslatePos() {
@@ -78,13 +79,26 @@ class DragElement {
 
     const eleCurX = x + offSetX;
     const eleCurY = y + offSetY;
+console.log('offsetx', offSetX);
+ 
 
-    this.mouseBeginPos.x = mouseCurX;
-    this.mouseBeginPos.y = mouseCurY;
-
-    if (this.fn(offSetX)) {
-      this.onMove(offSetX, 0, eleCurX);
+    // console.log('compare', compare);
+    if (this.compare) {
+      if (this.compare(offSetX, offSetY)) {
+        console.log('onmove', offSetX);
+        this.onMove(offSetX, offSetY)
+      }
+    } else {
+       console.log('onmove', offSetX);
+      this.onMove(offSetX, offSetY);
     }
+
+    if(!this.customDragMove) {
+      this.dragEle.style.transform = `translate(${eleCurX}px, ${eleCurY}px)`;
+
+    }
+       this.mouseBeginPos.x = mouseCurX;
+    this.mouseBeginPos.y = mouseCurY;
 
   }
 
@@ -101,17 +115,14 @@ class DragElement {
       }
     });
 
-    this.dragEle.addEventListener('mousemove', (event) => {
+    document.addEventListener('mousemove', (event) => {
       event.preventDefault();
-      if (this.isMouseInRange(event)) {
-        this.dragEle.style.cursor = 'move';
-        if (this.isBeginMove) {
-          this.#setDragElePos(event.x, event.y);
+      if (this.isBeginMove) {
+        console.log('event.x', event.x);
+        this.#setDragElePos(event.x, event.y);
+        this.dragEle.style.cursor = 'pointer';
 
-        }
-      } else {
-        this.dragEle.style.cursor = 'pointer'
-      };
+      }
     });
     document.addEventListener('touchmove', (event) => {
       event.preventDefault();

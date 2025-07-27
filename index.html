@@ -12,15 +12,34 @@
 
 <body>
 
+  <div class="wrap1">
+    <div id="single-ele"></div>
+    <div id="drag2">drag2</div>
+  </div>
+
   <div class="wrap" id="wrapper">
-    <div class="rect-ele" id="scalable-ele-1">This is the drag box on the left.You can drag this element. The minimum width of the element is 100px.You can also customize the minimum width.This is the drag box on the left.You can drag this element. The minimum width of the element is 100px.You can also customize the minimum width.This is the drag box on the left.You can drag this element. The minimum width of the element is 100px.You can also customize the minimum width.</div>
+    <div class="rect-ele" id="scalable-ele-1">This is the drag box on the left.You can drag this element. The minimum
+      width of the element is 100px.You can also customize the minimum width.This is the drag box on the left.You can
+      drag this element. The minimum width of the element is 100px.You can also customize the minimum width.This is the
+      drag box on the left.You can drag this element. The minimum width of the element is 100px.You can also customize
+      the minimum width.</div>
     <div class="drag-wrap" id="draggable-ele-1">
 
     </div>
-    <div class="rect-ele" id="scalable-ele-2">This is the drag box on the right.You can drag this element. The minimum width of the element is 100px.You can also customize the minimum width. </div>
+    <div class="rect-ele" id="scalable-ele-2">This is the drag box on the right.You can drag this element. The minimum
+      width of the element is 100px.You can also customize the minimum width. </div>
 
   </div>
 
+
+
+  <div class="wrap3" id="wrap3">
+    <div id="wrap3-left">left</div>
+    <div id="wrap3-drag1"></div>
+    <div id="wrap3-middle">middle</div>
+    <div id="wrap3-drag2"></div>
+    <div id="wrap3-right">right</div>
+  </div>
 
 
 
@@ -30,13 +49,14 @@
     const leftScaleEle = document.getElementById('scalable-ele-1');
     const rightScaleEle = document.getElementById('scalable-ele-2');
 
+
     const leftComputedStyle = window.getComputedStyle(leftScaleEle);
     const rightComputedStyle = window.getComputedStyle(rightScaleEle);
 
     let minLeftWidth = 100;
     let minRightWidth = 100;
 
-    const rangeDiff = (offsetX) => {
+    const compare = (offsetX) => {
       const curLeftScalePos = getScaleElePos(leftScaleEle);
       const curRightScalePos = getScaleElePos(rightScaleEle);
       if (curLeftScalePos.width <= minLeftWidth && offsetX < 0 || curRightScalePos.width <= minRightWidth && offsetX > 0) {
@@ -45,7 +65,7 @@
       return true;
     }
 
-    const dragEleInstance = new DragElement(dragEle, rangeDiff);
+    const dragEleInstance = new DragElement(dragEle, compare, true);
 
     const getScaleElePos = (ele) => {
       const eleRect = ele.getBoundingClientRect();
@@ -55,7 +75,7 @@
       }
     };
 
-    dragEleInstance.onMove = ((offsetX, offsetY, translateX) => {
+    dragEleInstance.onMove = ((offsetX, offsetY) => {
       const curLeftScalePos = getScaleElePos(leftScaleEle);
       const curRightScalePos = getScaleElePos(rightScaleEle);
 
@@ -67,6 +87,141 @@
 
     });
 
+
+    const singleEle = document.getElementById('single-ele');
+    const drag2 = document.getElementById('drag2');
+    const dragEleInstance1 = new DragElement(drag2);
+    dragEleInstance1.onMove = (offsetX, offsetY) => {
+      const singleElePos = getScaleElePos(singleEle);
+
+
+      singleEle.style.width = singleElePos.width + offsetX + 'px';
+      singleEle.style.height = singleElePos.height + offsetY + 'px';
+    }
+
+
+    const wrapper3 = document.getElementById('wrap3');
+    const wrap3Drag1 = document.getElementById('wrap3-drag1');
+    const wrap3Drag2 = document.getElementById('wrap3-drag2');
+
+    const wrap3LeftEle = document.getElementById('wrap3-left');
+    const wrap3MiddleEle = document.getElementById('wrap3-middle');
+    const wrap3RightEle = document.getElementById('wrap3-right');
+
+
+    const wrap3LeftEleStyle = window.getComputedStyle(wrap3LeftEle);
+    const wrap3MiddleEleStyle = window.getComputedStyle(wrap3MiddleEle);
+    const wrap3RightEleStyle = window.getComputedStyle(wrap3RightEle);
+
+    let minWrap3LeftWidth = 100;
+    let maxWrap3LeftWidth = 400;
+
+    let minWrap3MiddleWidth = 100;
+    let maxWrap3MiddleWidth = 300;
+
+    let minWrap3RightWidth = 100;
+    let maxWrap3RightWidth = 500;
+
+    const compare3 = (offsetX, offsetY) => {
+      const curLeftScalePos = getScaleElePos(wrap3LeftEle);
+      const curMiddleScalePos = getScaleElePos(wrap3MiddleEle);
+      const curRightScalePos = getScaleElePos(wrap3RightEle);
+
+      if (curLeftScalePos.width <= minWrap3LeftWidth && offsetX < 0 || curMiddleScalePos.width <= minWrap3MiddleWidth && curRightScalePos.width <= minWrap3RightWidth && offsetX > 0) {
+        return false
+      }
+
+      return true;
+    }
+    let middleGrow;
+    let middleFrozenGrow;
+
+    const wrap3Drag1EleInstance = new DragElement(wrap3Drag1, compare3, true);
+    // const wrap3Drag2EleInstance = new DragElement(wrap3Drag2, compare, true);
+    wrap3Drag1EleInstance.onMove = ((offsetX, offsetY) => {
+      const parentScalePos = getScaleElePos(wrapper3);
+      const curLeftScalePos = getScaleElePos(wrap3LeftEle);
+      const curMiddleScalePos = getScaleElePos(wrap3MiddleEle);
+      const curRightScalePos = getScaleElePos(wrap3RightEle);
+
+
+
+
+      const leftGrow = wrap3LeftEleStyle.flexGrow / curLeftScalePos.width * (curLeftScalePos.width + offsetX);
+      const middleGrow = wrap3MiddleEleStyle.flexGrow / curMiddleScalePos.width * (curMiddleScalePos.width - offsetX);
+      const rightGrow = wrap3RightEleStyle.flexGrow / curRightScalePos.width * (curRightScalePos.width - offsetX);
+
+
+      if (!(curLeftScalePos.width <= minWrap3LeftWidth && offsetX <= 0 || curLeftScalePos.width >= maxWrap3LeftWidth && offsetX >= 0)) {
+        let minLeftGrow = 1500 / (parentScalePos.width - 20) * minWrap3LeftWidth;
+        let maxLeftGrow = 1500 / (parentScalePos.width - 20) * maxWrap3LeftWidth;
+        wrap3LeftEle.style.flexGrow = Math.min(Math.max(leftGrow, minLeftGrow), maxLeftGrow);
+      }
+
+      if (!(curMiddleScalePos.width <= minWrap3MiddleWidth && offsetX >= 0 || curMiddleScalePos.width >= maxWrap3MiddleWidth && offsetX <= 0)) {
+        let minMiddleGrow = 1500 / (parentScalePos.width - 20) * minWrap3MiddleWidth;
+        let maxMiddleGrow = 1500 / (parentScalePos.width - 20) * maxWrap3MiddleWidth;
+        wrap3MiddleEle.style.flexGrow = Math.min(Math.max(middleGrow, minMiddleGrow), maxMiddleGrow);
+      } else {
+        if (!(curRightScalePos.width <= minWrap3RightWidth && offsetX >= 0 || curRightScalePos.width >= maxWrap3RightWidth && offsetX <= 0)) {
+          let minRightGrow = 1500 / (parentScalePos.width - 20) * minWrap3RightWidth;
+          let maxRightGrow = 1500 / (parentScalePos.width - 20) * maxWrap3RightWidth;
+          wrap3RightEle.style.flexGrow = Math.min(Math.max(rightGrow, minRightGrow), maxRightGrow);
+        }
+      }
+    });
+
+
+    const compare4 = (offsetX, offsetY) => {
+      const curLeftScalePos = getScaleElePos(wrap3LeftEle);
+      const curMiddleScalePos = getScaleElePos(wrap3MiddleEle);
+      const curRightScalePos = getScaleElePos(wrap3RightEle);
+
+      if (curRightScalePos.width <= minWrap3RightWidth && offsetX > 0 || curMiddleScalePos.width <= minWrap3MiddleWidth && curLeftScalePos.width <= minWrap3LeftWidth && offsetX < 0) {
+        return false
+      }
+
+      return true;
+    }
+    const wrap3Drag2EleInstance = new DragElement(wrap3Drag2, compare4, true);
+
+    wrap3Drag2EleInstance.onMove = ((offsetX, offsetY) => {
+      const parentScalePos = getScaleElePos(wrapper3);
+
+      const curLeftScalePos = getScaleElePos(wrap3LeftEle);
+      const curMiddleScalePos = getScaleElePos(wrap3MiddleEle);
+      const curRightScalePos = getScaleElePos(wrap3RightEle);
+
+
+      const wrap3LeftEleStyle = window.getComputedStyle(wrap3LeftEle);
+      const wrap3MiddleEleStyle = window.getComputedStyle(wrap3MiddleEle);
+      const wrap3RightEleStyle = window.getComputedStyle(wrap3RightEle);
+
+      const leftGrow = wrap3LeftEleStyle.flexGrow / curLeftScalePos.width * (curLeftScalePos.width + offsetX);
+      const middleGrow = wrap3MiddleEleStyle.flexGrow / curMiddleScalePos.width * (curMiddleScalePos.width + offsetX);
+      const rightGrow = wrap3RightEleStyle.flexGrow / curRightScalePos.width * (curRightScalePos.width - offsetX);
+
+
+      if (!((curRightScalePos.width <= minWrap3RightWidth && offsetX >= 0 || curRightScalePos.width >= maxWrap3RightWidth && offsetX <= 0))) {
+        let minRightGrow = 1500 / (parentScalePos.width - 20) * minWrap3RightWidth;
+        let maxRightGrow = 1500 / (parentScalePos.width - 20) * maxWrap3RightWidth;
+        wrap3RightEle.style.flexGrow = Math.min(Math.max(rightGrow, minRightGrow), maxRightGrow);
+      }
+
+      if (!(curMiddleScalePos.width <= minWrap3MiddleWidth && offsetX <= 0 || curMiddleScalePos.width >= maxWrap3MiddleWidth && offsetX >= 0)) {
+        let minMiddleGrow = 1500 / (parentScalePos.width - 20) * minWrap3MiddleWidth;
+        let maxMiddleGrow = 1500 / (parentScalePos.width - 20) * maxWrap3MiddleWidth;
+        wrap3MiddleEle.style.flexGrow = Math.min(Math.max(middleGrow, minMiddleGrow), maxMiddleGrow);
+      } else {
+        if (!(curLeftScalePos.width <= minWrap3LeftWidth && offsetX <= 0 || curLeftScalePos.width > maxWrap3LeftWidth && offsetX >= 0)) {
+
+          let minLeftGrow = 1500 / (parentScalePos.width - 20) * minWrap3LeftWidth;
+          let maxLeftGrow = 1500 / (parentScalePos.width - 20) * maxWrap3LeftWidth;
+          wrap3LeftEle.style.flexGrow = Math.min(Math.max(leftGrow, minLeftGrow), maxLeftGrow);
+
+        }
+      }
+    });
 
   </script>
 
